@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 export function CardStackDemo() {
   return (
     <div className="h-[40rem] flex items-center justify-center w-full">
-      <CardStack items={CARDS} />
+      <CardStack  items={CARDS} />
     </div>
   );
 }
@@ -16,7 +16,7 @@ export const Highlight = ({
   return (
     <span
       className={cn(
-        "font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-700/[0.2] dark:text-emerald-500 px-1 py-0.5",
+        "font-bold text-black bg-emerald-100 text-emerald-700 dark:bg-emerald-700/[0.2] dark:text-emerald-500 px-1 py-0.5",
         className
       )}>
       {children}
@@ -31,21 +31,18 @@ const CARDS = [
     designation: "Fullstack developer",
     content: (
       <p>
-        These cards are amazing, <Highlight>I want to use them</Highlight> in my
-        project. Framer motion is a godsend ngl tbh fam 🙏
+        The automatic dubbing is <Highlight>revolutionary! </Highlight> Being able to understand lectures in my regional language(Hindi) immediately breaks down the biggest learning barrier
       </p>
     ),
   },
   {
     id: 1,
     name: "Amratha D Kamath",
-    designation: "Senior Reaearch engineer",
+    designation: "Senior Research engineer",
     content: (
       <p>
-        I dont like this Twitter thing,{" "}
-        <Highlight>deleting it right away</Highlight> because yolo. Instead, I
-        would like to call it <Highlight>X.com</Highlight> so that it can easily
-        be confused with adult sites.
+        
+        <Highlight>Fantastic first version!</Highlight> I hope they add more regional dialects and the live lecture feature.
       </p>
     ),
   },
@@ -55,11 +52,20 @@ const CARDS = [
     designation: "Xtransmatrix CEO",
     content: (
       <p>
-        The first rule of
-        <Highlight>Fight Club</Highlight> is that you do not talk about fight
-        club. The second rule of
-        <Highlight>Fight club</Highlight> is that you DO NOT TALK about fight
-        club.
+        
+        <Highlight>Dubbing sounds natural</Highlight> 
+        Better synchronization would make it perfect.
+      </p>
+    ),
+  },
+  {
+    id: 3,
+    name: "Bhoomika",
+    designation: "Xtransmatrix ",
+    content: (
+      <p>
+        
+        <Highlight>Excellent work, easier accessibitlity of content in regional languages.</Highlight> 
       </p>
     ),
   },

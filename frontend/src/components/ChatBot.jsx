@@ -4,29 +4,39 @@ import { Send, Loader2, User, Bot, Zap } from 'lucide-react';
 // Configuration for the Gemini API
 const MODEL_NAME = 'gemini-2.5-flash-preview-09-2025';
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
-const API_KEY = "AIzaSyBDSa-vcLP_ZXBePkAyu9lMBPZQ8wVZVFo"; 
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// Validate API key is present
+if (!API_KEY) {
+    console.error('VITE_GEMINI_API_KEY is not set. Please create a .env file in the frontend directory with VITE_GEMINI_API_KEY=your_api_key');
+} else if (API_KEY === 'your_api_key_here') {
+    console.error('VITE_GEMINI_API_KEY is still set to the placeholder value. Please replace it with your actual API key in the .env file.');
+} else {
+    // Log first few characters for debugging (don't log the full key for security)
+    console.log('API key loaded:', API_KEY.substring(0, 10) + '...');
+}
 
 // Helper function for exponential backoff retry logic
 const fetchWithRetry = async (url, options, maxRetries = 5) => {
     let lastError = null;
     for (let i = 0; i < maxRetries; i++) {
-        const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s, 8s, 16s...
+        const delay = Math.pow(2, i) * 1000;
         try {
             if (i > 0) {
-                // Wait for the backoff period
+                
                 await new Promise(resolve => setTimeout(resolve, delay));
             }
             
             const response = await fetch(url, options);
 
-            // If the response is OK, break and return it
+            
             if (response.ok) {
                 return response;
             } else if (response.status === 429) {
-                // Too Many Requests, continue to retry
+            
                 console.warn(`Attempt ${i + 1} failed with status 429. Retrying in ${delay / 1000}s...`);
             } else {
-                // Other non-retryable errors (e.g., 400, 500)
+      
                 const errorBody = await response.json();
                 console.error("Non-retryable API error:", errorBody);
                 throw new Error(`API Request failed with status ${response.status}: ${errorBody.error?.message || 'Unknown error'}`);
@@ -93,6 +103,15 @@ function ChatApp(){
     const sendMessage = useCallback(async (text) => {
         if (!text.trim() || isLoading) return;
 
+        // Check if API key is configured
+        if (!API_KEY) {
+            setMessages(prev => [...prev, {
+                role: 'model',
+                text: "⚠️ API key not configured. Please create a .env file in the frontend directory with:\n\nVITE_GEMINI_API_KEY=your_api_key_here\n\nAfter adding the file, restart the development server.",
+            }]);
+            return;
+        }
+
         const userMessage = { role: 'user', text };
 
         // 1. Update UI with user message and start loading indicator
@@ -137,9 +156,18 @@ function ChatApp(){
         } catch (error) {
             console.error("Gemini API Error:", error);
             // 3. Update UI with an error message
+            let errorMessage = "An error occurred while connecting to the AI. Please try again.";
+            
+            // Provide more specific error messages
+            if (error.message && error.message.includes('API key not valid')) {
+                errorMessage = "⚠️ Invalid API key. Please check your .env file and ensure VITE_GEMINI_API_KEY is set correctly. After updating, restart the development server.";
+            } else if (error.message && error.message.includes('API key')) {
+                errorMessage = "⚠️ API key issue detected. Please verify your VITE_GEMINI_API_KEY in the .env file.";
+            }
+            
             setMessages(prev => [...prev, {
                 role: 'model',
-                text: "An error occurred while connecting to the AI. Please try again.",
+                text: errorMessage,
             }]);
         } finally {
             // 4. Stop loading indicator

@@ -10,7 +10,7 @@ import { dubbingService } from './services/dubbingService';
 
 export default function Vocalyst() {
   const [activeTab, setActiveTab] = useState('youtube');
-  const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [youtubeUrl, setYoutubeUrl] = useState('');22
   const [selectedFile, setSelectedFile] = useState(null);
   const [targetLanguage, setTargetLanguage] = useState('es');
   const [currentJobId, setCurrentJobId] = useState(null);
