@@ -17,7 +17,7 @@ async function connectDB() {
     };
 
     cached.promise = mongoose.connect(
-      process.env.MONGODB_URI || 'mongodb+srv://Afza1:Afzal123@secret.b5cmo.mongodb.net/Vocalyst',
+      process.env.MONGODB_URI,
       opts
     ).then((mongoose) => {
       return mongoose;

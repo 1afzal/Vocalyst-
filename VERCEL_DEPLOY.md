@@ -21,7 +21,10 @@ This project is configured to deploy on Vercel. Follow these steps:
    Go to Project Settings → Environment Variables and add:
    - `MONGODB_URI` - Your MongoDB connection string
    - `ELEVENLABS_API_KEY` - Your ElevenLabs API key
+   - `VITE_GEMINI_API_KEY` - Your Google Gemini API key (for ChatBot feature)
    - `NODE_ENV` - Set to `production`
+
+   **Note:** For frontend environment variables (those starting with `VITE_`), Vercel will automatically inject them during the build process.
 
 4. **Deploy:**
    - Click "Deploy"
@@ -76,6 +79,7 @@ The current setup processes dubbing jobs in the background (fire-and-forget). Fo
 
 ## Local Development
 
+### Backend Setup
 For local development, you can still use the original Express server:
 
 ```bash
@@ -85,4 +89,28 @@ npm run dev
 ```
 
 The frontend will use `http://localhost:6969/api` in development mode.
+
+### Frontend Setup
+1. **Create a `.env` file in the `frontend` directory:**
+   ```bash
+   cd frontend
+   cp .env.example .env
+   ```
+
+2. **Add your API keys to `.env`:**
+   ```
+   VITE_GEMINI_API_KEY=your_actual_gemini_api_key_here
+   ```
+
+3. **Get your Gemini API key:**
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create a new API key
+   - Copy it to your `.env` file
+
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+**Important:** After creating or modifying the `.env` file, restart your development server for changes to take effect.
 

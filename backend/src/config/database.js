@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      process.env.MONGODB_URI || 'mongodb+srv://Afza1:Afzal123@secret.b5cmo.mongodb.net/Vocalyst'
+      process.env.MONGODB_URI
     );
     console.log('MongoDB connected successfully');
   } catch (error) {
